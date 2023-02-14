@@ -16,8 +16,8 @@ router.post("/signin", passport.authenticate("local.signin", {
   }) ,
   function(req, res) {
     try {
-      
-      res.json({username: req.body.username, user: req.user})
+      console.log(req.body)
+      res.json({user: req.user})
     } catch (error) {
       console.error('Clave erronea')
     }
@@ -30,15 +30,42 @@ router.post(
   passport.authenticate("local.signup", {
     successRedirect: "/",
     failureRedirect: "/signup",
-  })
+  }), (req, res) => {
+    try {
+      
+      res.json(user)
+    } catch (error) {
+      console.error('Clave erronea')
+    }
+  }
 );
+
+router.post("/logout", (req, res) => {
+  req.logout(function(err) {
+    if (err) { return next(err); }
+    // res.redirect('/');
+  });
+  req.session.destroy((err) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.clearCookie('connect.sid');
+      res.json({ message: 'Sesión cerrada correctamente' });
+    }
+  })
+  res.json("Deslogeado")
+});
+router.get("/logout", (req, res) => {
+  req.logOut(function(err) {
+    if (err) { return next(err); }
+    // res.redirect('/');
+  });
+  res.json("Deslogeado")
+ });
+
 
 router.get("/signup", (req, res) => {
   res.send("Hello signup");
-});
-
-router.get("/logout", (req, res) => {
-  res.send("Hello logout");
 });
 
 module.exports = router;

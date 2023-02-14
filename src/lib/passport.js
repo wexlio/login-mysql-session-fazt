@@ -21,7 +21,8 @@ passport.use(
             console.log('   CLAVE VORRECTA EXCELENTE')
             done(null, user)
         } else {
-            console.log('clave invalida por favor no sea w')
+          console.log(req.body)
+            console.log('  clave invalida por favor no sea w')
             done('CLAVE MALA1', false)
         }
     } else {

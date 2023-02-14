@@ -4,7 +4,7 @@ const router = express.Router();
 const pool = require("../database");
 const { isLoggedIn, isNotLoggedIn } = require("./auth");
 
-router.get("/profile", isLoggedIn, async (req, res) => {
+router.get("/profile", async (req, res) => {
   try {
     const result = await pool.query("select * from users");
 

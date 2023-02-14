@@ -19,7 +19,12 @@ app.use(session({
   secret:'fazt',
   resave: false,
   saveUninitialized: false,
-  store: new mysqlStore(database)
+  store: new mysqlStore(database),
+  cookie: {
+    secure: false,  // if true only transmit cookie over https
+    httpOnly: false, // if true prevent client side JS from reading the cookie
+    maxAge: 60000, // session max age in milliseconds
+  },
 }))
 app.use(morgan("dev"));
 app.use(cors())
@@ -30,6 +35,7 @@ app.use(passport.session())
 
 //Global variables
 app.use((req, res, next) => {
+  app.locals.user = req.user
     next()
 })
 
